@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>Question Form</title>
+
+    <div th:replace="fragments/fragment :: head"></div>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <script defer type="text/javascript" src="/js/questionControl.js"></script>
+
+    <link href="/style/toggleSwitch.css" rel="stylesheet">
+
+</head>
+
+<header th:insert="fragments/header"></header>
+<body>
+
+<div class="container">
+
+    <form class="needs-validation" novalidate>
+
+        <div class="form-group row">
+            <label for="questionId" class="col-2 col-form-label">ID</label>
+            <div class="col-8">
+                <input type="text" readonly class="form-control-plaintext text-secondary" id="questionId"
+                       th:value="${question.id}">
+            </div>
+            <button type="button" class="col-sm-2 btn btn-danger" onclick='deleteQuestion()'>Delete</button>
+        </div>
+
+        <div class="form-group row">
+
+            <label for="questionText" class="col-sm-2 col-form-label">Question Text</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="questionText" rows="3" placeholder="Question text"
+                          th:text="${question.text}" required></textarea>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+                <div class="invalid-feedback">
+                    Please enter question.
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <span class="col-8">Variants</span>
+            <button type="button" class="col-sm-2 btn btn-primary border" onclick='addVariant()'>Add</button>
+            <button id="remove" type="button" class="col-sm-2 btn btn-primary border" onclick="removeVariant()">Remove
+            </button>
+
+        </div>
+        <hr>
+
+        <p class="row col-sm-2 text-nowrap">Is correct</p>
+        <span class="text-danger" id='invalid-checkbox-message' hidden>There must be 3 to 7 variants with at least 1 wrong and right variants</span>
+
+        <div id="variants">
+
+            <div th:replace="fragments/fragment :: rightVariants"></div>
+
+            <div th:replace="fragments/fragment :: wrongVariants"></div>
+
+            <div th:if="${question.getRightVariants() == null}" th:remove="tag">
+                <div th:replace="fragments/fragment :: emptyVariant"></div>
+                <div th:replace="fragments/fragment :: emptyVariant"></div>
+                <div th:replace="fragments/fragment :: emptyVariant"></div>
+            </div>
+
+        </div>
+
+
+        <button type="button" onclick="submitQuestion()" class="btn btn-success">Submit</button>
+
+    </form>
+
+</div>
+</body>
+</html>

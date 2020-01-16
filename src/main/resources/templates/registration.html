@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration</title>
+
+    <div th:replace="fragments/fragment :: head"></div>
+</head>
+<body>
+<header th:insert="fragments/header"></header>
+
+<div class="container">
+
+    <form class="needs-validation" action="/registration" method="post" novalidate>
+        <div class="form-row">
+            <div class="form-group col-sm-6">
+                <div class="form-group">
+                    <label for="loginInput">User Name</label>
+                    <input id="loginInput" class="form-control" type="text" name="userName" placeholder="User Name" required/>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please choose a username.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <div class="form-group">
+                    <label for="passwordInput">Password</label>
+                    <input id="passwordInput" class="form-control" type="password" name="password" placeholder="Password" required/>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please choose a password.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+
+
+        <span class="text-danger" th:text="${message}"></span>
+
+
+</div>
+<script src="/js/validateForms.js"></script>
+</body>
+</html>

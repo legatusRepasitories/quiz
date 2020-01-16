@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Quiz App</title>
+    <div th:replace="fragments/fragment :: head"></div>
+<!--    {{>common/headTag}}-->
+
+</head>
+<body>
+
+<header th:insert="fragments/header"></header>
+<!--    {{>common/header}}-->
+
+<div class="container">
+
+    Content of the main page
+
+</div>
+
+
+
+<div sec:authorize="isAnonymous()">anon</div>
+<div sec:authorize="hasAnyRole('ADMIN')">auth ADMIN</div>
+<div sec:authorize="hasAnyRole('USER')">auth USER</div>
+
+</body>
+</html>

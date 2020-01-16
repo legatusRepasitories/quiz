@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:fragment="head" th:remove="tag">
+
+    <meta charset="utf-8">
+
+    <!-- width=device-width - ширина экрана в пикселях CSS в масштабе 100% -->
+    <!-- initial-scale=1 - уровень масштабирования при первой загрузке -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <!-- Bootstrap CSS -->
+    <!-- integrity - allow the browser to check the file source to ensure that the code is never loaded if the source has been manipulated -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- FontAwesome - icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+<!--    <script type="text/javascript" src="https://kit.fontawesome.com/f081320b38.js" crossorigin="anonymous"></script>-->
+
+</div>
+
+<div th:fragment="emptyVariant" th:remove="tag">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <textarea class="form-control" placeholder="Enter variant" rows="2" required></textarea>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <div class="invalid-feedback">
+            Please enter a variant.
+        </div>
+    </div>
+</div>
+
+<div th:fragment="rightVariants" th:remove="tag" >
+    <div class="input-group mb-3" th:each="rv : ${question.rightVariants}">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <textarea class="form-control" placeholder="Enter variant" rows="2" th:text="${rv}" required></textarea>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <div class="invalid-feedback">
+            Please enter a variant.
+        </div>
+    </div>
+</div>
+
+<div th:fragment="wrongVariants" th:remove="tag" >
+    <div class="input-group mb-3" th:each="wv : ${question.wrongVariants}">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        <textarea class="form-control" placeholder="Enter variant" rows="2" th:text="${wv}" required></textarea>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <div class="invalid-feedback">
+            Please enter a variant.
+        </div>
+    </div>
+</div>
+</body>
+</html>

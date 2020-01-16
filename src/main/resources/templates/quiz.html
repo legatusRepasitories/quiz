@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quiz</title>
+
+    <div th:replace="fragments/fragment :: head"></div>
+
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <link href="/style/toggleSwitch.css" rel="stylesheet">
+
+    <script defer src="/js/quiz.js"></script>
+</head>
+<body>
+
+<header th:insert="fragments/header"></header>
+</header>
+<br>
+<div class="container">
+
+    <div id="end" class="text-danger text-center"></div>
+    <div id="noQuestions" class="text-primary text-center"></div>
+    <div id="panel" style="display:none">
+
+        <form id="quizForm" class="needs-validation" novalidate>
+            <div class="form-group row d-flex justify-content-center">
+
+                <div class="col-sm-10">
+                    <p class="text-center border" id="questionText"></p>
+                    <!--                    <textarea class="form-control" id="questionText" rows="3" readonly></textarea>-->
+                </div>
+
+            </div>
+            <hr>
+
+            <div id="variants">
+
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary" onclick="validate()" type="button">submit</button>
+            </div>
+        </form>
+
+
+    </div>
+
+    <button id="flip" class="btn btn-primary btn-block" data-toggle="button">Begin Quiz
+    </button>
+
+</div>
+</body>
+</html>
