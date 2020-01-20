@@ -1,12 +1,18 @@
 package com.gmail.quiz.dao.user;
 
+import com.gmail.quiz.PostgresqlContainerImpl;
 import com.gmail.quiz.model.Role;
 import com.gmail.quiz.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,6 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Import(SpringDataUserDAO.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Testcontainers
 class SpringDataUserDAOTest {
 
     //    @Autowired private DataSource dataSource;
@@ -25,6 +33,9 @@ class SpringDataUserDAOTest {
     @Autowired
     private SpringDataUserDAO repo;
 
+    @Container
+    public static PostgreSQLContainer<PostgresqlContainerImpl> postgreSQLContainer = PostgresqlContainerImpl.getInstance();
+
     private User user1;
     private User user2;
     private User user3;
@@ -32,6 +43,7 @@ class SpringDataUserDAOTest {
 
     @BeforeEach
     public void beforeEach() {
+
 
         user1 = new User("testDBUser1", "password");
         user1.setRoles(new HashSet<>(Collections.singletonList(Role.USER)));
@@ -56,6 +68,8 @@ class SpringDataUserDAOTest {
 //        assertThat(entityManager).isNotNull();
 //        assertThat(userRepository).isNotNull();
         assertThat(repo).isNotNull();
+        assertThat(postgreSQLContainer).isNotNull();
+
     }
 
     @Test

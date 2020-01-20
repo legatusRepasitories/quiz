@@ -1,16 +1,18 @@
 package com.gmail.quiz.dao.question;
 
+import com.gmail.quiz.PostgresqlContainerImpl;
 import com.gmail.quiz.model.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -19,10 +21,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import(SpringDataQuestionDAO.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Testcontainers
 class SpringDataQuestionDAOTest {
 
     @Autowired
     private SpringDataQuestionDAO repo;
+
+    @Container
+    public static PostgreSQLContainer<PostgresqlContainerImpl> postgreSQLContainer = PostgresqlContainerImpl.getInstance();
 
     private Question question1;
     private Question question3;
@@ -74,8 +81,7 @@ class SpringDataQuestionDAOTest {
         repo.createQuestion(question3);
 
 
-        Set<Question> questions = StreamSupport
-                .stream(repo.getAllQuestions().spliterator(), false).collect(Collectors.toSet());
+        Set<Question> questions = new HashSet<>(repo.getAllQuestions());
 
 
         assertThat(questions).isNotNull();
@@ -110,8 +116,7 @@ class SpringDataQuestionDAOTest {
 
         repo.deleteQuestionById(savedQuestion.getId());
         Question deletedQuestion = repo.getQuestionById(savedQuestion.getId());
-        Set<Question> questions = StreamSupport
-                .stream(repo.getAllQuestions().spliterator(), false).collect(Collectors.toSet());
+        Set<Question> questions = new HashSet<>(repo.getAllQuestions());
 
 
         assertThat(deletedQuestion).isNull();
