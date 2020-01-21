@@ -1,5 +1,6 @@
 package com.gmail.quiz.service;
 
+import com.gmail.quiz.dao.user.UserRepo;
 import com.gmail.quiz.model.Role;
 import com.gmail.quiz.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,31 +14,30 @@ import java.util.stream.Stream;
 
 @Service
 public class DBInit
-//        implements CommandLineRunner
+        implements CommandLineRunner
 {
 
-    private UserService service;
+    private UserRepo repo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public DBInit(UserService service) {
-        this.service = service;
+    public DBInit(UserRepo repo) {
+        this.repo = repo;
     }
 
 
     public void run(String... args) throws Exception {
-        service.deleteAll();
+        if (repo.findByUserName("admin") == null) {
 
-        User admin = new User("a", "a");
-        admin.setEnabled(true);
-//        admin.setRoles(Collections.singleton(Role.ADMIN));
-        admin.setRoles(Stream.of(Role.ADMIN, Role.USER).collect(Collectors.toSet()));
+            User admin = new User("admin", "admin");
+            admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+            admin.setEnabled(true);
+            admin.setRoles(Stream.of(Role.ADMIN, Role.USER).collect(Collectors.toSet()));
 
-        User user = new User("u", "u");
-        user.setEnabled(true);
-        user.setRoles(Collections.singleton(Role.USER));
+            repo.save(admin);
+        }
 
-        service.createUser(admin);
-        service.createUser(user);
     }
 
 
